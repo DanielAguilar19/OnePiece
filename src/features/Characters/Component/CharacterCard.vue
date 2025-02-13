@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-3 md:grid-cols-3 gap-4">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
     <Card v-for="character in characters" :key="character.id" style="width: 25rem; overflow: hidden">
       <template #header>
         <img :alt="character.name" :src="getCharacterImage(character)" class="w-full h-48 object-cover" />
@@ -50,6 +50,7 @@ const showDetails = (id: number) => {
 <style scoped>
 .grid {
   display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   justify-content: center;
 }
