@@ -2,14 +2,17 @@
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
     <Card v-for="character in characters" :key="character.id" style="width: 25rem; overflow: hidden">
       <template #header>
-        <img :alt="character.name" :src="getCharacterImage(character)" class="w-full h-48 object-cover" />
+        <div id="seccionGif"
+          :style="{ backgroundImage: `url(${gifs[character.id] || 'https://via.placeholder.com/300'})` }"
+          class="gif-container"></div>
       </template>
       <template #title>{{ character.name }}</template>
       <template #subtitle>{{ character.job || "Sin chamba" }}</template>
       <template #content>
-        <p class="m-0">
-          {{ character.crew?.description || "Sin Descripción Disponible." }}
-        </p>
+        <p class="m-0">{{ character.crew?.name || "Sin Descripción Disponible." }}</p>
+        <p class="m-0">{{ character.age }}</p>
+        <p class="m-0">{{ character.bounty || "Sin recompensa" }}</p>
+        <p class="m-0">{{ character.fruit?.name || "Sin fruta" }}</p>
       </template>
       <template #footer>
         <div class="flex gap-4 mt-1">
@@ -21,25 +24,49 @@
 </template>
 
 <script setup lang="ts">
-import Card from 'primevue/card';
+import Card from "primevue/card";
+import Button from "primevue/button";
 import { ref, onMounted } from "vue";
 import { Personajes } from "../../../api/characters";
+import { GetGiphy } from "@/api/gifs";
 import type { Character } from "../Interface/CharaterInterface";
+import type { Gif } from "../../Gifs/Interfaces/IGifs";
 
 const characters = ref<Character[]>([]);
+const gifs = ref<{ [key: string]: string }>({});
 
 onMounted(async () => {
   try {
     characters.value = await Personajes.GetCharacters();
+    await loadGifs();
   } catch (error) {
     console.error("Error obteniendo los personajes:", error);
   }
 });
 
-const getCharacterImage = (character: Character): string => {
-  return character.fruit?.filename
-    ? `https://tu-api.com/images/${character.fruit.filename}`
-    : "https://via.placeholder.com/300";
+const loadGifs = async () => {
+  for (const character of characters.value) {
+    try {
+      const response = await GetGiphy(character.name);
+
+      if (response.data?.data?.length > 0) {
+        const gif: Gif = {
+          id: character.id.toString(),
+          url: response.data.data[0].images.original.url
+        };
+        gifs.value[character.id] = gif.url;
+      } else {
+        console.warn(`No se encontraron GIFs para ${character.name}`);
+        gifs.value[character.id] = "https://via.placeholder.com/300";
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+    } catch (error) {
+      console.error("Error obteniendo GIF para", character.name, error);
+      gifs.value[character.id] = "https://via.placeholder.com/300";
+    }
+  }
 };
 
 const showDetails = (id: number) => {
@@ -55,7 +82,11 @@ const showDetails = (id: number) => {
   justify-content: center;
 }
 
-img {
+.gif-container {
+  width: 100%;
+  height: 192px;
+  background-size: cover;
+  background-position: center;
   border-radius: 8px;
 }
 </style>

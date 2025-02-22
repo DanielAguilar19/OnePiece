@@ -18,9 +18,11 @@
   "dependencies": {
     "@primevue/themes": "^4.2.5",
     "@tailwindcss/vite": "^4.0.6",
+    "@vueuse/core": "^12.5.0",
     "axios": "^1.7.9",
     "one_piece": "file:",
     "pinia": "^2.2.6",
+    "primeicons": "^7.0.0",
     "primevue": "^4.2.5",
     "tailwindcss": "^4.0.6",
     "vue": "^3.5.13",
@@ -29,7 +31,7 @@
   "devDependencies": {
     "@tsconfig/node22": "^22.0.0",
     "@types/jsdom": "^21.1.7",
-    "@types/node": "^22.13.1",
+    "@types/node": "^22.13.2",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vitejs/plugin-vue-jsx": "^4.1.1",
     "@vitest/eslint-plugin": "1.1.10",

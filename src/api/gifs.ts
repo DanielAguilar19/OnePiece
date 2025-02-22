@@ -1,7 +1,5 @@
-import process from 'process'
-
 const serviceUrl: string = 'https://api.giphy.com/v1/gifs'
-const apiKey = process.env.api_Key
+const apiKey = 'l5kZb4tEAMxM2OE1GU3ghAfMRzhnQTGW'
 
 export function GetGiphy(searchTag: string) {
   return fetch(`${serviceUrl}/search?api_key=${apiKey}&q=${searchTag}&limit=1`)
