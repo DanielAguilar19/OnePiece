@@ -1,7 +1,5 @@
 # 🏴‍☠️ One Piece - Vue 3 Project 🏴‍☠️
 
-![One Piece Banner](https://via.placeholder.com/800x200?text=One+Piece+Project)
-
 ## 📋 Descripción
 
 Este proyecto está desarrollado con Vue 3 y Vite, creando una aplicación web temática de One Piece. Navega por el Grand Line con esta aplicación moderna y eficiente.
