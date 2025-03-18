@@ -1,7 +1,7 @@
 <template>
   <HeaderComponent></HeaderComponent>
   <main>
-    <h1>Content Armado en HomeView</h1>
+    <h1>Lista de Personajes</h1>
     <CharacterCard></CharacterCard>
   </main>
 </template>
