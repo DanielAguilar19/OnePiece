@@ -8,7 +8,7 @@ export function GetGiphy(searchTag: string) {
       return data.data[0].images.original.url
     })
     .catch((error) => {
-      console.error('Error:', error)
+      console.error('No se encontró gif para:', `${searchTag}`, ' ', error)
       return null
     })
 }

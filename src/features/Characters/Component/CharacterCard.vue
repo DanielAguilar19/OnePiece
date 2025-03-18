@@ -28,9 +28,9 @@ import Card from "primevue/card";
 import Button from "primevue/button";
 import { ref, onMounted } from "vue";
 import { Personajes } from "../../../api/characters";
-import { GetGiphy } from "@/api/gifs";
+//import { GetGiphy } from "@/api/gifs";
 import type { Character } from "../Interface/CharaterInterface";
-import type { Gif } from "../../Gifs/Interfaces/IGifs";
+//import type { Gif } from "../../Gifs/Interfaces/IGifs";
 
 const characters = ref<Character[]>([]);
 const gifs = ref<{ [key: string]: string }>({});
@@ -38,36 +38,12 @@ const gifs = ref<{ [key: string]: string }>({});
 onMounted(async () => {
   try {
     characters.value = await Personajes.GetCharacters();
-    await loadGifs();
+    //await loadGifs();
   } catch (error) {
     console.error("Error obteniendo los personajes:", error);
   }
 });
 
-const loadGifs = async () => {
-  for (const character of characters.value) {
-    try {
-      const response = await GetGiphy(character.name);
-
-      if (response.data?.data?.length > 0) {
-        const gif: Gif = {
-          id: character.id.toString(),
-          url: response.data.data[0].images.original.url
-        };
-        gifs.value[character.id] = gif.url;
-      } else {
-        console.warn(`No se encontraron GIFs para ${character.name}`);
-        gifs.value[character.id] = "https://via.placeholder.com/300";
-      }
-
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-    } catch (error) {
-      console.error("Error obteniendo GIF para", character.name, error);
-      gifs.value[character.id] = "https://via.placeholder.com/300";
-    }
-  }
-};
 
 const showDetails = (id: number) => {
   console.log("Detalles:", id);
