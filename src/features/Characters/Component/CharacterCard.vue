@@ -2,8 +2,7 @@
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
     <Card class="card" v-for="character in characters" :key="character.id" style="width: 25rem; overflow: hidden">
       <template #header>
-        <div id="seccionGif"
-          :style="{ backgroundImage: `url(${gifs[character.id] || 'https://via.placeholder.com/300'})` }"
+        <div :style="{ backgroundImage: `url(${gifs[character.id] || 'https://via.placeholder.com/300'})` }"
           class="gif-container"></div>
       </template>
       <template #title>{{ character.name }}</template>
@@ -28,22 +27,32 @@ import Card from "primevue/card";
 import Button from "primevue/button";
 import { ref, onMounted } from "vue";
 import { onePieceService } from "../../../api/characters";
+import { GiphyService } from "@/api/gifs";
 import type { Character } from "../Interface/CharaterInterface";
-import type { Gifs } from "../../Gifs/Interfaces/IGifs";
-
+//import type { Gifs } from "../../Gifs/Interfaces/IGifs";
 
 const characters = ref<Character[]>([]);
-const gifs = ref<Gifs[]>([]);
+// Usamos un objeto para almacenar los GIFs por id
+const gifs = ref<Record<number, string>>({});
 
 onMounted(async () => {
   try {
     characters.value = await onePieceService.GetCharacters();
-    //await loadGifs();
+    await loadGifs(); // Cargamos los GIFs para los personajes
   } catch (error) {
     console.error("Error obteniendo los personajes:", error);
   }
 });
 
+// Función para cargar los GIFs usando el nombre del personaje
+async function loadGifs() {
+  for (const character of characters.value) {
+    const gifUrl = await GiphyService.getGif(character.name);
+    if (gifUrl) {
+      gifs.value[character.id] = gifUrl; // Almacenamos el GIF en el objeto, indexado por id
+    }
+  }
+}
 
 const showDetails = (id: number) => {
   console.log("Detalles:", id);
@@ -73,7 +82,6 @@ const showDetails = (id: number) => {
   background-color: rgba(17, 25, 40, 0.75);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
-  display: flex;
-  justify-content: center;
+  padding: 10px;
 }
 </style>

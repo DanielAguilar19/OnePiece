@@ -4,7 +4,7 @@ export const onePieceService = {
   async GetCharacters() {
     try {
       const response = await axios.get(`https://api.api-onepiece.com/v2/characters/en`)
-      response.data = response.data.slice(0, 2)
+      response.data = response.data.slice(0, 3)
       console.log(response.data)
       return response.data
     } catch (error) {
