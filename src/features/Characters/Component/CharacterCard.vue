@@ -1,6 +1,6 @@
 <template>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <Card v-for="character in characters" :key="character.id" style="width: 25rem; overflow: hidden">
+    <Card class="card" v-for="character in characters" :key="character.id" style="width: 25rem; overflow: hidden">
       <template #header>
         <div id="seccionGif"
           :style="{ backgroundImage: `url(${gifs[character.id] || 'https://via.placeholder.com/300'})` }"
@@ -27,17 +27,17 @@
 import Card from "primevue/card";
 import Button from "primevue/button";
 import { ref, onMounted } from "vue";
-import { Personajes } from "../../../api/characters";
-//import { GetGiphy } from "@/api/gifs";
+import { onePieceService } from "../../../api/characters";
 import type { Character } from "../Interface/CharaterInterface";
-//import type { Gif } from "../../Gifs/Interfaces/IGifs";
+import type { Gifs } from "../../Gifs/Interfaces/IGifs";
+
 
 const characters = ref<Character[]>([]);
-const gifs = ref<{ [key: string]: string }>({});
+const gifs = ref<Gifs[]>([]);
 
 onMounted(async () => {
   try {
-    characters.value = await Personajes.GetCharacters();
+    characters.value = await onePieceService.GetCharacters();
     //await loadGifs();
   } catch (error) {
     console.error("Error obteniendo los personajes:", error);
@@ -64,5 +64,16 @@ const showDetails = (id: number) => {
   background-size: cover;
   background-position: center;
   border-radius: 8px;
+}
+
+/* Glassmorphism card effect */
+.card {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(17, 25, 40, 0.75);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  display: flex;
+  justify-content: center;
 }
 </style>

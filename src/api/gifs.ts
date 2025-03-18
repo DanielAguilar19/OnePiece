@@ -1,14 +1,19 @@
-const serviceUrl: string = 'https://api.giphy.com/v1/gifs'
-const apiKey = 'l5kZb4tEAMxM2OE1GU3ghAfMRzhnQTGW'
+import axios from 'axios'
 
-export function GetGiphy(searchTag: string) {
-  return fetch(`${serviceUrl}/search?api_key=${apiKey}&q=${searchTag}&limit=1`)
-    .then((response) => response.json())
-    .then((data) => {
-      return data.data[0].images.original.url
-    })
-    .catch((error) => {
-      console.error('No se encontró gif para:', `${searchTag}`, ' ', error)
+const GIPHY_URL = 'https://api.giphy.com/v1/gifs/search'
+const GIPHY_API_KEY = 'l5kZb4tEAMxM2OE1GU3ghAfMRzhnQTGW'
+
+export const GiphyService = {
+  async getGif(searchTag: string) {
+    try {
+      const response = await axios.get(
+        `${GIPHY_URL}?api_key=${GIPHY_API_KEY}&q=${encodeURIComponent(searchTag)}&limit=1`,
+      )
+      const data = response.data.data
+      return data.length > 0 ? data[0].images.original.url : null
+    } catch (error) {
+      console.error('Error fetching GIF for:', searchTag, error)
       return null
-    })
+    }
+  },
 }

@@ -28,6 +28,7 @@ export interface Gif {
   analytics_response_payload: string
   analytics: Analytics
 }
+export type Gifs = Gif[]
 
 export interface Analytics {
   onload: Onclick

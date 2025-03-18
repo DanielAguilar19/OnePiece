@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const Personajes = {
+export const onePieceService = {
   async GetCharacters() {
     try {
       const response = await axios.get(`https://api.api-onepiece.com/v2/characters/en`)
@@ -12,7 +12,7 @@ export const Personajes = {
     }
   },
 }
-export const Pesonaje = {
+export const Personaje = {
   async GetCharacterById(id: number) {
     try {
       const response = await axios.get(`https://api.api-onepiece.com/v2/characters/en/${id}`)
