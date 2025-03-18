@@ -1,60 +1,69 @@
-# one_piece
+# 🏴‍☠️ One Piece - Vue 3 Project 🏴‍☠️
 
-This template should help get you started developing with Vue 3 in Vite.
+![One Piece Banner](https://via.placeholder.com/800x200?text=One+Piece+Project)
 
-## Recommended IDE Setup
+## 📋 Descripción
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Este proyecto está desarrollado con Vue 3 y Vite, creando una aplicación web temática de One Piece. Navega por el Grand Line con esta aplicación moderna y eficiente.
 
-## Type Support for `.vue` Imports in TS
+## 🚀 Demo en Vivo
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+**¡Visita la versión desplegada!** 👉 [https://danielaguilar19.github.io/OnePiece/](https://danielaguilar19.github.io/OnePiece/)
 
-## Customize configuration
+## 🛠️ Configuración de IDE Recomendada
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (y deshabilitar Vetur)
 
-## Project Setup
+## ⚙️ Soporte de TypeScript para Importaciones `.vue`
+
+TypeScript no puede manejar información de tipos para importaciones `.vue` por defecto, por lo que reemplazamos la CLI `tsc` con `vue-tsc` para verificación de tipos. En editores, necesitamos [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) para que el servicio de lenguaje TypeScript reconozca los tipos de `.vue`.
+
+## 📝 Personalizar Configuración
+
+Consulta la [Referencia de Configuración de Vite](https://vitejs.dev/config/).
+
+## 🔍 Instalación del Proyecto
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+## 💻 Comandos Disponibles
+
+### ▶️ Compilar con Hot-Reload para Desarrollo
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### 📦 Verificar Tipos, Compilar y Minificar para Producción
 
 ```sh
 npm run build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+### ✅ Ejecutar Pruebas Unitarias con [Vitest](https://vitest.dev/)
 
 ```sh
 npm run test:unit
 ```
 
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
+### 🧪 Ejecutar Pruebas End-to-End con [Cypress](https://www.cypress.io/)
 
 ```sh
 npm run test:e2e:dev
 ```
 
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
-
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
+Esto ejecuta las pruebas end-to-end contra el servidor de desarrollo de Vite.
+Es mucho más rápido que la compilación de producción.
+Pero aún se recomienda probar la compilación de producción con `test:e2e` antes de implementar (por ejemplo, en entornos CI):
 
 ```sh
 npm run build
 npm run test:e2e
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### 🧹 Linting con [ESLint](https://eslint.org/)
 
 ```sh
 npm run lint
