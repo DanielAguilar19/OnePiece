@@ -8,7 +8,7 @@
 }
 /* Background styles */
 body {
-  background-image: url('C:\Users\aguil\OneDrive\Desktop\one_piece\src\assets\images\background.jpg');
+  background-image: url('/background.jpg');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;

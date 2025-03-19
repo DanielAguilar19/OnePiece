@@ -1,4 +1,4 @@
-FROM node:20.13.1
+FROM node:20.15.0
 
 WORKDIR /src
 
@@ -8,6 +8,6 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 8080
+EXPOSE 5173
 
 CMD [ "npm", "run", "dev" ]
