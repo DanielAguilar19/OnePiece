@@ -12,10 +12,12 @@ export const onePieceService = {
     }
   },
 }
-export const Personaje = {
-  async GetCharacterById(id: number) {
+export const PersonajePorNombre = {
+  async GetCharacterByName(name: string) {
     try {
-      const response = await axios.get(`https://api.api-onepiece.com/v2/characters/en/${id}`)
+      const response = await axios.get(
+        `https://api.api-onepiece.com/v2/characters/en/search/?name=${name}`,
+      )
       console.log(response.data)
       return response.data
     } catch (error) {

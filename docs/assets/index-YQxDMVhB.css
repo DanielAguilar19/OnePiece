@@ -76,7 +76,7 @@ body {
   font-weight: 400;
 }
 body {
-  background-image: url(background-BSGZlvk4.jpg);
+  background-image: url(../background.jpg);
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -104,13 +104,98 @@ a,
     padding: 0 2rem;
   }
 }
-#Header-Container[data-v-f2b060de] {
+.grid[data-v-cc0b6bf4] {
+  display: grid;
+  justify-content: center;
+}
+.gif-container[data-v-cc0b6bf4] {
+  width: 100%;
+  height: 192px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+}
+.card[data-v-cc0b6bf4] {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: #111928bf;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  padding: 10px;
+}
+.input-group[data-v-cae2a2c0] {
+  display: flex;
+  gap: 6px;
+  background: #ffffff1a;
+  padding: 6px;
+  border-radius: 10px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 350px;
+  margin: 15px auto;
+  box-shadow: 0 3px 8px #00000026;
+}
+input[data-v-cae2a2c0] {
+  flex: 1;
+  padding: 6px;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+  background: #fff3;
+  color: #fff;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+input[data-v-cae2a2c0]::placeholder {
+  color: #ffffffb3;
+}
+input[data-v-cae2a2c0]:focus {
+  background: #ffffff4d;
+}
+button[data-v-cae2a2c0] {
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.search-btn[data-v-cae2a2c0] {
+  background: #007bffb3;
+  color: #fff;
+}
+.search-btn[data-v-cae2a2c0]:hover {
+  background: #007bffe6;
+}
+.clear-btn[data-v-cae2a2c0] {
+  background: #dc3545b3;
+  color: #fff;
+}
+.clear-btn[data-v-cae2a2c0]:hover {
+  background: #dc3545e6;
+}
+#Header-Container[data-v-b90bbb14] {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: fixed;
   z-index: 10000;
   top: 0;
   left: 0;
   width: 100%;
   background-color: #137b65;
+  padding: 10px 20px;
+}
+.header-title[data-v-b90bbb14] {
+  margin: 0;
+  color: #fff;
+  font-size: 24px;
+}
+.search-container[data-v-b90bbb14] {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .grid[data-v-4cf6062f] {
   display: grid;
