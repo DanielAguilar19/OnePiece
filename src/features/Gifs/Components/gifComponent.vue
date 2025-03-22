@@ -126,7 +126,7 @@ const showDetails = (id: number) => {
 
 /* Efecto 3D personalizado al hacer hover */
 .card:hover {
-  transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) scale(1.02);
+  transform: perspective(1000px) rotateX(-5deg) rotateY(5deg) scale(1.02);
   /* Rotación en X e Y */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
   /* Sombra más pronunciada */

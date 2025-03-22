@@ -91,6 +91,8 @@ const showDetails = (id: number) => {
   /* Mantiene la perspectiva 3D */
   position: relative;
   /* Necesario para el pseudo-elemento de brillo */
+  overflow: hidden;
+  /* Oculta el exceso del pseudo-elemento */
 }
 
 /* Efecto de brillo en los bordes */
@@ -114,7 +116,7 @@ const showDetails = (id: number) => {
 
 /* Efecto 3D personalizado al hacer hover */
 .card:hover {
-  transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) scale(1.02);
+  transform: perspective(1000px) rotateX(-5deg) rotateY(5deg) scale(1.02);
   /* Rotación en X e Y */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
   /* Sombra más pronunciada */
