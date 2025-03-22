@@ -37,4 +37,38 @@ import SearchButton from './SearchButton.vue';
   align-items: center;
   gap: 10px;
 }
+
+@media only screen and (max-width: 639px) {
+  #Header-Container {
+    height: 10vh;
+    margin-bottom: 20px;
+
+  }
+
+  /* Ajustes para tablets (2 columnas) */
+  @media only screen and (min-width: 640px) and (max-width: 767px) {
+    #Header-Container {
+      height: 10vh;
+      margin-bottom: 20px;
+
+    }
+  }
+
+  /* Ajustes para pantallas medianas (3 columnas) */
+  @media only screen and (min-width: 768px) and (max-width: 1023px) {
+    #Header-Container {
+      height: 10vh;
+      margin-bottom: 20px;
+    }
+  }
+
+  /* Ajustes para pantallas grandes (3 columnas) */
+  @media only screen and (min-width: 1024px) {
+    #Header-Container {
+      height: 10vh;
+      margin-bottom: 20px;
+
+    }
+  }
+}
 </style>

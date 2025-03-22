@@ -116,7 +116,7 @@ const showDetails = (id: number) => {
 
 /* Efecto 3D personalizado al hacer hover */
 .card:hover {
-  transform: perspective(1000px) rotateX(-5deg) rotateY(5deg) scale(1.02);
+  transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) scale(1.02);
   /* Rotación en X e Y */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
   /* Sombra más pronunciada */
@@ -144,5 +144,65 @@ const showDetails = (id: number) => {
   /* Cambio de color al hover */
   transform: translateY(-2px);
   /* Efecto de elevación */
+}
+
+/* Estilos base para móviles (1 columna) */
+@media only screen and (max-width: 639px) {
+  .grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .gif-container {
+    height: 12rem;
+  }
+}
+
+/* Ajustes para tablets (2 columnas) */
+@media only screen and (min-width: 640px) and (max-width: 767px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .gif-container {
+    height: 16rem;
+  }
+}
+
+/* Ajustes para pantallas medianas (3 columnas) */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .card {
+    width: 25rem;
+  }
+
+  .gif-container {
+    height: 192px;
+  }
+}
+
+/* Ajustes para pantallas grandes (3 columnas) */
+@media only screen and (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .card {
+    width: 25rem;
+  }
+
+  .gif-container {
+    height: 192px;
+  }
 }
 </style>

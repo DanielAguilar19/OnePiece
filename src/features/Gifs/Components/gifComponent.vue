@@ -154,4 +154,62 @@ const showDetails = (id: number) => {
   transform: translateY(-2px);
   /* Efecto de elevación */
 }
+
+@media only screen and (max-width: 639px) {
+  .grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .gif-container {
+    height: 12rem;
+  }
+}
+
+/* Ajustes para tablets (2 columnas) */
+@media only screen and (min-width: 640px) and (max-width: 767px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .gif-container {
+    height: 16rem;
+  }
+}
+
+/* Ajustes para pantallas medianas (3 columnas) */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .card {
+    width: 25rem;
+  }
+
+  .gif-container {
+    height: 192px;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .card {
+    width: 25rem;
+  }
+
+  .gif-container {
+    height: 192px;
+  }
+}
 </style>

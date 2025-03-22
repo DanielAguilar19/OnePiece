@@ -24,3 +24,32 @@ watchEffect(() => {
   console.log("🟢 isSearching:", isSearching.value);
 });
 </script>
+
+<style scoped>
+@media only screen and (max-width: 639px) {
+  main {
+    margin-top: 10vh;
+  }
+
+  /* Ajustes para tablets (2 columnas) */
+  @media only screen and (min-width: 640px) and (max-width: 767px) {
+    main {
+      margin-top: 10vh;
+    }
+  }
+
+  /* Ajustes para pantallas medianas (3 columnas) */
+  @media only screen and (min-width: 768px) and (max-width: 1023px) {
+    main {
+      margin-top: 10vh;
+    }
+  }
+
+  /* Ajustes para pantallas grandes (3 columnas) */
+  @media only screen and (min-width: 1024px) {
+    main {
+      margin-top: 10vh;
+    }
+  }
+}
+</style>
