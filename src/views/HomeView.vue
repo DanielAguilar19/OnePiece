@@ -1,7 +1,7 @@
 <template>
   <HeaderComponent></HeaderComponent>
   <main>
-    <h1>Lista de Personajes</h1>
+    <p class="text-xl">Lista de Personajes</p>
     <CharacterCard v-show="!isSearching"></CharacterCard>
     <gifComponent v-if="isSearching"></gifComponent>
   </main>

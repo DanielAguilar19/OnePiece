@@ -12,7 +12,11 @@
     }
   ],
   "compilerOptions": {
-    "module": "NodeNext",
-    "types": ["node"]
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "target": "ES6",
+    "moduleResolution": "node",
+    "strict": true,
+    "types": ["vite/client"]
   }
 }

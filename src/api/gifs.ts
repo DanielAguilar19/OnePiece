@@ -1,7 +1,7 @@
 import axios from 'axios'
 
+const GIPHY_API_KEY = import.meta.env.VITE_API_KEY // Se usa import.meta.env para Vite
 const GIPHY_URL = 'https://api.giphy.com/v1/gifs/search'
-const GIPHY_API_KEY = 'l5kZb4tEAMxM2OE1GU3ghAfMRzhnQTGW'
 
 export const GiphyService = {
   async getGif(searchTag: string) {
