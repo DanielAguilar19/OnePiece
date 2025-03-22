@@ -1,5 +1,5 @@
 <template>
-  <div id="Header-Container">
+  <div class="rounded-b-xl" id="Header-Container">
     <h1 class="header-title">One Piece</h1>
     <div class="search-container">
       <SearchButton />
@@ -21,6 +21,7 @@ import SearchButton from './SearchButton.vue';
   top: 0;
   left: 0;
   width: 100%;
+  height: 12vh;
   background-color: rgb(19, 123, 101);
   padding: 10px 20px;
 }

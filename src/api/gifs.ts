@@ -7,7 +7,7 @@ export const GiphyService = {
   async getGif(searchTag: string) {
     try {
       const response = await axios.get(
-        `${GIPHY_URL}?api_key=${GIPHY_API_KEY}&q=${encodeURIComponent(searchTag)}&limit=10`,
+        `${GIPHY_URL}?api_key=${GIPHY_API_KEY}&q=One Piece ${encodeURIComponent(searchTag)}&limit=10`,
       )
       const data = response.data.data
       const randomIndex = Math.floor(Math.random() * 10)

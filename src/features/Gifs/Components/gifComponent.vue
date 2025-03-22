@@ -95,5 +95,63 @@ const showDetails = (id: number) => {
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
   padding: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* Transición suave */
+  perspective: 1000px;
+  /* Perspectiva para el efecto 3D */
+  transform-style: preserve-3d;
+  /* Mantiene la perspectiva 3D */
+  position: relative;
+  /* Necesario para el pseudo-elemento de brillo */
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5);
+  /* Brillo blanco */
+  opacity: 0;
+  /* Inicialmente invisible */
+  transition: opacity 0.3s ease;
+  /* Transición suave */
+  pointer-events: none;
+  /* Evita que interfiera con los clics */
+}
+
+/* Efecto 3D personalizado al hacer hover */
+.card:hover {
+  transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) scale(1.02);
+  /* Rotación en X e Y */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  /* Sombra más pronunciada */
+}
+
+.card:hover::before {
+  opacity: 1;
+  /* Hace visible el brillo */
+}
+
+/* Estilo para el contenido de la card */
+.card-content {
+  transform: translateZ(20px);
+  /* Aumenta la profundidad del contenido */
+}
+
+/* Estilo para el botón */
+.button {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  /* Cambio de color al hover */
+  transform: translateY(-2px);
+  /* Efecto de elevación */
 }
 </style>

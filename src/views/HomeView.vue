@@ -1,9 +1,9 @@
 <template>
   <HeaderComponent></HeaderComponent>
   <main>
-    <h1 class="text-xl">Lista de Personajes</h1>
-    <CharacterCard v-show="!isSearching"></CharacterCard>
-    <gifComponent v-if="isSearching"></gifComponent>
+    <h1 class="mx-5 text-3xl">Lista de Personajes</h1>
+    <CharacterCard class="mt-4" v-show="!isSearching"></CharacterCard>
+    <gifComponent class="mt-4" v-if="isSearching"></gifComponent>
   </main>
 </template>
 
