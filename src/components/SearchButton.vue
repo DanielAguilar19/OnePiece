@@ -9,31 +9,46 @@
 
 <script setup lang="ts">
 import AutoComplete from 'primevue/autocomplete';
-import { useSearchStore } from '../stores/searchStore';
 import { storeToRefs } from 'pinia';
 import { ref, onMounted } from 'vue';
+import { watchEffect } from 'vue';
+import { useSearchStore } from '../stores/searchStore';
 import { onePieceService } from "../api/characters";
 import type { Character } from "../features/Characters/Interface/CharaterInterface";
 
 const searchStore = useSearchStore();
 const { searchQuery, isSearching } = storeToRefs(searchStore);
 const characters = ref<Character[]>([]);
-const filteredCharacters = ref<{ label: string }[]>([]);
+const filteredCharacters = ref<string[]>([]);
+const selectedCharacter = ref<string>('');
 
 onMounted(async () => {
   characters.value = await onePieceService.GetAllCharacters();
   console.log("Personajes cargados Para el Autocomplete SearchBar:", characters.value);
 });
 
+
+watchEffect(() => {
+  if (!searchQuery.value) {
+    isSearching.value = false;
+    console.log("Input Vacío");
+  }
+});
+
+
 function handleSearch(event: { query: string }) {
   filteredCharacters.value = characters.value
     .filter((char) => char.name.toLowerCase().includes(event.query.toLowerCase()))
-    .map((char) => ({ label: char.name }));
+    .map((char) => char.name);
+
 }
 
 const actualizarBusqueda = () => {
-  searchStore.actualizarBusqueda(searchQuery.value);
-  console.log("Desde el store:", searchQuery.value);
+  if (selectedCharacter.value) {//Valida si se seleccionó un personaje y lo guarda en searchQuery
+    searchQuery.value = selectedCharacter.value;
+    searchStore.actualizarBusqueda(searchQuery.value);
+  }
+  searchStore.actualizarBusqueda(searchQuery.value);//Si no selecciona un personaje, guarda el texto escrito en searchQuery
 };
 
 const clearSearch = () => {

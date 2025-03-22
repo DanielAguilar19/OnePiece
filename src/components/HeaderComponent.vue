@@ -17,7 +17,7 @@ import SearchButton from './SearchButton.vue';
   justify-content: space-between;
   align-items: center;
   position: fixed;
-  z-index: 10000;
+  z-index: 1000;
   top: 0;
   left: 0;
   width: 100%;
