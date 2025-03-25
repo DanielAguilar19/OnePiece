@@ -22,7 +22,7 @@
         </template>
         <template #footer>
           <div class="flex gap-4 mt-1">
-            <Button label="Details" severity="secondary" outlined class="w-full" @click="openModal(character)" />
+            <Button label="Details" severity="secondary" outlined class="w-full" @click="openModal(character,)" />
           </div>
         </template>
       </Card>

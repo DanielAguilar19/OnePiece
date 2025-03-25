@@ -70,6 +70,7 @@ function openModal(character: Character) {
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   justify-content: center;
+  margin: 8%;
 }
 
 .gif-container {

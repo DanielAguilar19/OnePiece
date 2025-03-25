@@ -1,13 +1,14 @@
 <template>
   <div v-if="visible" class="modal-overlay" @click.self="closeModal">
     <div class="modal-content">
-      <Dialog class="dialog" v-model:visible="internalVisible" modal :header="character?.name || 'Character Details'"
-        :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+      <Dialog class="dialog glassmorphism-card" v-model:visible="internalVisible" modal
+        :header="character?.name || 'Character Details'" :style="{ width: '50rem' }"
+        :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" @close="closeModal">
         <div class="character-info">
           <div v-if="!gifUrl" class="skeleton-image"></div>
           <img v-else :src="gifUrl" class="character-image" />
           <div class="details">
-            <template v-if="!gifUrl">
+            <template v-if="!character">
               <div class="skeleton-line"></div>
               <div class="skeleton-line"></div>
               <div class="skeleton-line"></div>
@@ -15,7 +16,7 @@
               <div class="skeleton-line"></div>
               <div class="skeleton-line"></div>
               <div class="skeleton-line"></div>
-              <div v-if="character?.fruit" class="skeleton-line"></div>
+              <div class="skeleton-line"></div>
             </template>
             <template v-else>
               <p><strong>Position:</strong> {{ character?.job || 'Unknown' }}</p>
@@ -24,11 +25,17 @@
               <p><strong>Size:</strong> {{ character?.size || 'Unknown' }} </p>
               <p><strong>Status:</strong> {{ character?.status || 'Unknown' }} </p>
               <p><strong>Bounty:</strong> ฿{{ character?.bounty?.toLocaleString() || 'Unknown' }}</p>
-              <p><strong>Devil Fruit:</strong> {{ character?.fruit?.name || 'None' }}</p>
-              <a v-if="character?.fruit"><strong>Devil Fruit Description:</strong> {{ character?.fruit?.description
-                || 'None' }}</a><br>
-              <a v-if="character?.fruit"><strong>Devil Fruit Type:</strong> {{ character?.fruit?.type
-                || 'None' }}</a>
+              <Accordion v-if="character?.fruit" value="0">
+                <AccordionPanel value="1">
+                  <AccordionHeader class="accordion-title">{{ character?.fruit?.name || 'None' }}</AccordionHeader>
+                  <AccordionContent>
+                    <p class="m-0">
+                      {{ character?.fruit?.description || 'None' }} ," ", {{ character?.fruit?.type || 'None' }}
+                    </p>
+                  </AccordionContent>
+                </AccordionPanel>
+              </Accordion>
+              <a v-else><strong>Devil Fruit:</strong> {{ character?.fruit?.name || 'None' }}</a>
             </template>
           </div>
         </div>
@@ -38,24 +45,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import Dialog from "primevue/dialog";
 import { GiphyService } from "@/api/gifs";
 import type { Character } from "../features/Characters/Interface/CharaterInterface";
 
+import Accordion from 'primevue/accordion';
+import AccordionPanel from 'primevue/accordionpanel';
+import AccordionHeader from 'primevue/accordionheader';
+import AccordionContent from 'primevue/accordioncontent';
+
 const props = defineProps({
   visible: Boolean,
-  character: Object as () => Character | null
+  character: Object as () => Character | null,
 });
 
 const emit = defineEmits(['close']);
 const internalVisible = ref(props.visible);
 const gifUrl = ref<string | null>(null);
-
+onMounted(async () => {
+  if (props.character) {
+    gifUrl.value = await GiphyService.getGif(props.character.name);
+  }
+})
 watch(() => props.visible, async (newVal) => {
   internalVisible.value = newVal;
   if (newVal && props.character) {
-    gifUrl.value = null;
     gifUrl.value = await GiphyService.getGif(props.character.name);
   }
 });
@@ -79,6 +94,28 @@ function closeModal() {
   z-index: 1000;
 }
 
+.glassmorphism-card {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(17, 25, 40, 0.75);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  position: relative;
+  z-index: 1002;
+  will-change: backdrop-filter;
+  transform: translateZ(0);
+}
+
+.accordion-title {
+  position: relative;
+  right: 2.8%;
+}
+
+.glassmorphism-card .p-dialog-content {
+  background: transparent;
+  color: inherit;
+}
+
 .modal-content {
   z-index: 1001;
   max-width: 90%;
@@ -86,7 +123,12 @@ function closeModal() {
   overflow-y: auto;
 }
 
-.dialog {
+.p-dialog {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(17, 25, 40, 0.75);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
   position: relative;
   z-index: 1002;
 }
