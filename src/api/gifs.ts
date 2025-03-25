@@ -21,16 +21,7 @@ export const GiphyService = {
       const filterCriteria: FilterCriteria = {
         unwantedUsernames: ['siswimsuit', 'playvalorant', 'valorant_esports', 'andbox'],
         unwantedSlugs: ['siswimsuit', 'valorant', 'nyxl'],
-        requiredKeywords: [
-          'one piece',
-          'luffy',
-          'zoro',
-          'nami',
-          'sanji',
-          'chopper',
-          'kaido',
-          'big mom',
-        ],
+        requiredKeywords: ['one piece'],
       }
 
       const filteredData = response.data.data.filter((gif: Gif) => {
