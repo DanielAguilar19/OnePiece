@@ -30,7 +30,7 @@
                   <AccordionHeader class="accordion-title">{{ character?.fruit?.name || 'None' }}</AccordionHeader>
                   <AccordionContent>
                     <p class="m-0">
-                      {{ character?.fruit?.description || 'None' }} ," ", {{ character?.fruit?.type || 'None' }}
+                      {{ character?.fruit?.description || 'None' }} Fruit Type: {{ character?.fruit?.type || 'None' }}
                     </p>
                   </AccordionContent>
                 </AccordionPanel>
