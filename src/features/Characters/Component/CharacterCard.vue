@@ -2,8 +2,6 @@
   <div>
     <CharacterModal v-if="selectedCharacter" :character="selectedCharacter" :visible="modalVisible"
       @close="modalVisible = false" />
-
-    <!-- Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <Card class="card" v-for="character in characters" :key="character.id" style="width: 25rem; overflow: hidden">
         <template #header>
@@ -70,7 +68,7 @@ function openModal(character: Character) {
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   justify-content: center;
-  margin: 8%;
+  margin: 2%;
 }
 
 .gif-container {

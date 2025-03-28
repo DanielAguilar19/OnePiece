@@ -14,16 +14,41 @@ type FilterCriteria = {
 export const GiphyService = {
   async getGif(searchTag: string): Promise<string | null> {
     try {
+      //SearchTags traducidos para obtener mejores coincidencias
+      switch (searchTag) {
+        case 'Edward Newgate / Barbe Blanche': {
+          searchTag = 'whitebeard'
+          break
+        }
+        case 'Marchall D. Teach / Barbe Noire': {
+          searchTag = 'blackbeard'
+          break
+        }
+        case 'Baggy / Le Clown': {
+          searchTag = 'Buggy the Clown'
+          break
+        }
+        default: {
+          searchTag = searchTag
+          break
+        }
+      }
       const response = await axios.get<SearchResponse>(
         `${GIPHY_URL}?api_key=${GIPHY_API_KEY}&q=One Piece ${encodeURIComponent(searchTag)}&limit=15`,
       )
 
       const filterCriteria: FilterCriteria = {
-        unwantedUsernames: ['siswimsuit', 'playvalorant', 'valorant_esports', 'andbox'],
-        unwantedSlugs: ['siswimsuit', 'valorant', 'nyxl'],
-        requiredKeywords: ['one piece'],
+        unwantedUsernames: ['siswimsuit', 'playvalorant', 'valorant_esports', 'andbox', 'cosplay'],
+        unwantedSlugs: ['siswimsuit', 'valorant', 'nyxl', 'cosplay'],
+        requiredKeywords: [
+          'one piece',
+          'TOEIAnimationUK',
+          'whitebeard',
+          'blackbeard',
+          'buggy the clown',
+        ],
       }
-
+      //Filtros para evitar contenido no deseado
       const filteredData = response.data.data.filter((gif: Gif) => {
         if (
           gif.username &&

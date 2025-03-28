@@ -26,6 +26,10 @@ watchEffect(() => {
 </script>
 
 <style scoped>
+main {
+  margin-top: 20vh;
+}
+
 @media only screen and (max-width: 639px) {
   main {
     margin-top: 10vh;
