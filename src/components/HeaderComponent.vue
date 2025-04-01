@@ -24,6 +24,7 @@ import SearchButton from './SearchButton.vue';
   height: 12vh;
   background-color: rgb(19, 123, 101);
   padding: 10px 20px;
+  margin-bottom: 20vh;
 }
 
 .header-title {

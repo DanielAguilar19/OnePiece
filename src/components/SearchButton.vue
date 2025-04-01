@@ -40,7 +40,6 @@ function handleSearch(event: { query: string }) {
   filteredCharacters.value = characters.value
     .filter((char) => char.name.toLowerCase().includes(event.query.toLowerCase()))
     .map((char) => char.name);
-
 }
 
 const actualizarBusqueda = () => {

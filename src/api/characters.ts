@@ -8,7 +8,7 @@ export const onePieceService = {
       //console.log(response.data)
       return response.data
     } catch (error) {
-      console.error('Error fetching data:', error)
+      console.error('Error fetching characters:', error)
     }
   },
   async GetAllCharacters() {
@@ -18,7 +18,7 @@ export const onePieceService = {
       //console.log(response.data)
       return response.data
     } catch (error) {
-      console.error('Error fetching data:', error)
+      console.error('Error fetching characters:', error)
     }
   },
 }
@@ -31,7 +31,7 @@ export const PersonajePorNombre = {
       //console.log(response.data)
       return response.data
     } catch (error) {
-      console.error('Error fetching data:', error)
+      console.error('Error fetching characters:', error)
     }
   },
 }

@@ -3,7 +3,8 @@
     <CharacterModal v-if="selectedCharacter" :character="selectedCharacter" :visible="modalVisible"
       @close="modalVisible = false" />
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <Card class="card" v-for="character in characters" :key="character.id" style="width: 25rem; overflow: hidden">
+      <Card class="card" v-for="character in characters" :key="character.id" style="width: 25rem; overflow: hidden"
+        ref="cardRefs">
         <template #header>
           <div :style="{ backgroundImage: `url(${gifs[character.id] || 'https://via.placeholder.com/300'})` }"
             class="gif-container"></div>
@@ -27,34 +28,86 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onBeforeMount, onMounted } from "vue";
 import Card from "primevue/card";
 import Button from "primevue/button";
 import CharacterModal from "../../../components/modalComponent.vue";
 import { onePieceService } from "../../../api/characters";
 import { GiphyService } from "@/api/gifs";
+import { useIntersectionObserver } from "@/utils/CharactersInterceptor";
 import type { Character } from "../Interface/CharaterInterface";
 
 const characters = ref<Character[]>([]);
 const gifs = ref<Record<number, string>>({});
 const modalVisible = ref(false);
 const selectedCharacter = ref<Character | null>(null);
+const cardRefs = ref<HTMLElement[]>([]);
 
-onMounted(async () => {
+const STORAGE_KEYS = {
+  CHARACTERS: 'one-piece-characters',
+  GIFS: 'one-piece-gifs'
+};
+
+onBeforeMount(async () => {
   try {
-    characters.value = await onePieceService.GetCharacters();
-    await loadGifs();
+    const storedCharacters = sessionStorage.getItem(STORAGE_KEYS.CHARACTERS);
+    const storedGifs = sessionStorage.getItem(STORAGE_KEYS.GIFS);
+
+    if (storedCharacters) {
+      characters.value = JSON.parse(storedCharacters);
+      console.log('Characters loaded from sessionStorage');
+    } else {
+      characters.value = await onePieceService.GetCharacters();
+      sessionStorage.setItem(STORAGE_KEYS.CHARACTERS, JSON.stringify(characters.value));
+      console.log('Characters fetched and saved to sessionStorage');
+    }
+
+    if (storedGifs) {
+      gifs.value = JSON.parse(storedGifs);
+      console.log('Gifs loaded from sessionStorage');
+    } else {
+      for (const character of characters.value) {
+        const gifUrl = await GiphyService.getGif(character.name);
+        if (gifUrl) gifs.value[character.id] = gifUrl;
+        gifs.value = gifUrl ? { ...gifs.value, [character.id]: gifUrl } : gifs.value;
+      }
+    }
   } catch (error) {
     console.error("Error:", error);
   }
 });
 
-async function loadGifs() {
-  for (const character of characters.value) {
-    const gifUrl = await GiphyService.getGif(character.name);
-    if (gifUrl) gifs.value[character.id] = gifUrl;
-  }
-}
+onMounted(() => {
+  setTimeout(() => {
+    if (cardRefs.value && cardRefs.value.length > 0) {
+      cardRefs.value.forEach((card, index) => {
+        if (!card) return;
+
+        const character = characters.value[index];
+        if (!character) return;
+
+        if (gifs.value[character.id]) return;
+
+        useIntersectionObserver(
+          ref(card),
+          async () => {
+            if (!gifs.value[character.id]) {
+              const gifUrl = await GiphyService.getGif(character.name);
+              if (gifUrl) {
+                gifs.value[character.id] = gifUrl;
+                const storedGifs = sessionStorage.getItem(STORAGE_KEYS.GIFS);
+                const gifsObject = storedGifs ? JSON.parse(storedGifs) : {};
+                gifsObject[character.id] = gifUrl;
+                sessionStorage.setItem(STORAGE_KEYS.GIFS, JSON.stringify(gifsObject));
+              }
+            }
+          },
+          { threshold: 0.1 }
+        );
+      });
+    }
+  }, 100);
+});
 
 function openModal(character: Character) {
   selectedCharacter.value = character;
