@@ -10,7 +10,6 @@
         <template #subtitle>{{ fruta.type || "Sin Descripción Disponible" }}</template>
         <template #content>
           <p class="m-0">{{ fruta.roman_name || "Sin nombre." }}</p>
-          <p class="m-0">{{ fruta.description || "Sin Descripción Disponible." }}</p>
         </template>
         <template #footer>
           <div class="flex gap-4 mt-1">

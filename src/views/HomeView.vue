@@ -1,7 +1,9 @@
 <template>
   <div class="carousel-wrapper">
     <h1 class="mx-5 text-3xl">One Piece Characters, Fruits and Crews</h1>
-    <carouselComponent />
+    <div class="container">
+      <carouselComponent />
+    </div>
   </div>
 </template>
 
@@ -9,4 +11,12 @@
 import carouselComponent from '@/components/carouselComponent.vue';
 </script>
 
-<style></style>
+<style>
+.container {
+  margin-top: 2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+</style>

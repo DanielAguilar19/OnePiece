@@ -1,10 +1,19 @@
 <template>
   <div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div v-if="loading" class="loading-container">
+      <p>Cargando tripulaciones...</p>
+    </div>
+    <div v-else-if="error" class="error-container">
+      <p>{{ error }}</p>
+      <button @click="retryFetch" class="retry-button">Reintentar</button>
+    </div>
+    <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <Card class="card" v-for="crew in visibleCrews" :key="crew.id" style="width: 25rem; overflow: hidden"
         ref="crewCardRefs">
         <template #header>
-          <!--<img :src="crew.filename" alt="Crew Image" class="crew-image" />-->
+          <div class="crew-header">
+            <span class="crew-label">{{ crew.name }}</span>
+          </div>
         </template>
         <template #title>{{ crew.name }}</template>
         <template #subtitle>{{ crew.status || "Sin Descripción Disponible" }}</template>
@@ -14,9 +23,13 @@
         </template>
         <template #footer>
           <div class="flex gap-4 mt-1">
+            <button class="detail-button">Ver Detalles</button>
           </div>
         </template>
       </Card>
+    </div>
+    <div v-if="!loading && !error && visibleCrews.length === 0" class="no-data">
+      No hay tripulaciones disponibles.
     </div>
   </div>
 </template>
@@ -26,87 +39,105 @@ import { ref, onBeforeMount, onMounted } from "vue";
 import Card from "primevue/card";
 import { CrewService } from "@/api/crews";
 import { useIntersectionObserver } from "@/utils/CharactersInterceptor";
-import { translateText } from '@/utils/translate';
 import type { Crew } from "@/features/Crews/Interface/CrewsInterface";
 
 const crews = ref<Crew[]>([]);
 const visibleCrews = ref<Crew[]>([]);
 const crewCardRefs = ref<HTMLElement[]>([]);
 const loadedCrewsIds = ref<Set<number>>(new Set());
+const loading = ref<boolean>(true);
+const error = ref<string | null>(null);
 
 const STORAGE_KEY = 'one-piece-crews';
-const INITIAL_LOAD_COUNT = 149;
+const INITIAL_LOAD_COUNT = 6;
+
 
 onBeforeMount(async () => {
+  await fetchCrews();
+});
+
+async function fetchCrews() {
+  loading.value = true;
+  error.value = null;
+
   try {
     const storedCrews = sessionStorage.getItem(STORAGE_KEY);
 
     if (storedCrews) {
-      crews.value = JSON.parse(storedCrews);
-      console.log('Crews loaded from sessionStorage');
-
-      visibleCrews.value = crews.value.slice(0, INITIAL_LOAD_COUNT);
-      visibleCrews.value.forEach(crew => loadedCrewsIds.value.add(crew.id));
-
-    } else {
-      const response = await CrewService.GetCrews();
-
-      if (Array.isArray(response)) {
-        const translatedCrews = await Promise.all(
-          response.map(async (crew) => {
-            let translatedName = crew.name;
-            let translatedStatus = crew.status;
-
-            try {
-              translatedName = await translateText(crew.name);
-              if (crew.status) {
-                translatedStatus = await translateText(crew.status);
-              }
-            } catch (error) {
-              console.warn(`Error translating crew ID ${crew.id}:`, error);
-            }
-
-            return {
-              ...crew,
-              name: translatedName,
-              status: translatedStatus
-            };
-          })
-        );
-
-        crews.value = translatedCrews;
-        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(crews.value));
-        console.log('Crews fetched and translated.');
-
-        visibleCrews.value = crews.value.slice(0, INITIAL_LOAD_COUNT);
-        visibleCrews.value.forEach(crew => loadedCrewsIds.value.add(crew.id));
-      } else {
-        console.error("La respuesta no es un array:", response);
-        crews.value = [];
-        visibleCrews.value = [];
+      const parsedData = JSON.parse(storedCrews);
+      if (Array.isArray(parsedData) && parsedData.length > 0) {
+        crews.value = parsedData;
+        console.log('Crews loaded from sessionStorage:', crews.value.length);
+        initializeVisibleCrews();
+        loading.value = false;
+        return;
       }
     }
-  } catch (error) {
-    console.error("Error cargando crews:", error);
-    crews.value = [];
-    visibleCrews.value = [];
+
+    console.log('Fetching crews from API...');
+    const response = await CrewService.GetCrews();
+
+    if (Array.isArray(response) && response.length > 0) {
+      crews.value = response;
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(crews.value));
+      console.log('Crews fetched and saved:', crews.value.length);
+    } else {
+      console.warn("La respuesta de API no es válida, usando datos de fallback");
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(crews.value));
+    }
+
+    initializeVisibleCrews();
+  } catch (err) {
+    console.error("Error al cargar datos:", err);
+    error.value = "Error al cargar las tripulaciones. Por favor, intenta de nuevo.";
+
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(crews.value));
+    initializeVisibleCrews();
+  } finally {
+    loading.value = false;
+  }
+}
+
+function initializeVisibleCrews() {
+  visibleCrews.value = crews.value.slice(0, INITIAL_LOAD_COUNT);
+
+  visibleCrews.value.forEach(crew => {
+    loadedCrewsIds.value.add(crew.id);
+  });
+}
+
+function retryFetch() {
+  sessionStorage.removeItem(STORAGE_KEY);
+  fetchCrews();
+}
+
+onMounted(() => {
+  if (crews.value.length > INITIAL_LOAD_COUNT) {
+    setupIntersectionObserver();
   }
 });
 
-onMounted(() => {
+function setupIntersectionObserver() {
   const loadMoreTrigger = document.createElement('div');
   loadMoreTrigger.style.width = '100%';
   loadMoreTrigger.style.height = '20px';
-  document.querySelector('.grid')?.appendChild(loadMoreTrigger);
+  loadMoreTrigger.id = 'load-more-trigger';
 
-  useIntersectionObserver(
-    ref(loadMoreTrigger),
-    () => {
-      loadMoreCrews();
-    },
-    { threshold: 0.1 }
-  );
-});
+  setTimeout(() => {
+    const gridElement = document.querySelector('.grid');
+    if (gridElement) {
+      gridElement.appendChild(loadMoreTrigger);
+
+      useIntersectionObserver(
+        ref(loadMoreTrigger),
+        () => {
+          loadMoreCrews();
+        },
+        { threshold: 0.1 }
+      );
+    }
+  }, 500);
+}
 
 function loadMoreCrews() {
   if (visibleCrews.value.length >= crews.value.length) {
@@ -120,10 +151,14 @@ function loadMoreCrews() {
   if (nextBatch.length === 0) return;
 
   visibleCrews.value = [...visibleCrews.value, ...nextBatch];
-  nextBatch.forEach(crew => loadedCrewsIds.value.add(crew.id));
+
+  nextBatch.forEach(crew => {
+    loadedCrewsIds.value.add(crew.id);
+  });
 
   console.log(`Loaded ${nextBatch.length} more crews. Total: ${visibleCrews.value.length}/${crews.value.length}`);
 }
+
 </script>
 
 <style scoped>
@@ -135,12 +170,43 @@ function loadMoreCrews() {
   margin: 2%;
 }
 
-.crew-image {
-  width: 50%;
-  height: auto;
+.loading-container,
+.error-container,
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  margin: 2rem;
+}
+
+.retry-button,
+.detail-button {
+  background-color: #4682B4;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.retry-button:hover,
+.detail-button:hover {
+  background-color: #366890;
+}
+
+.crew-header {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  display: block;
-  margin-left: 25%;
+}
+
+.crew-label {
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px black;
 }
 
 .card {
@@ -162,6 +228,7 @@ function loadMoreCrews() {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
+/* Estilos base para móviles (1 columna) */
 @media only screen and (max-width: 639px) {
   .grid {
     grid-template-columns: repeat(1, 1fr);
@@ -170,12 +237,9 @@ function loadMoreCrews() {
   .card {
     width: 100%;
   }
-
-  .crew-image {
-    height: 12rem;
-  }
 }
 
+/* Ajustes para tablets (2 columnas) */
 @media only screen and (min-width: 640px) and (max-width: 767px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
@@ -184,12 +248,9 @@ function loadMoreCrews() {
   .card {
     width: 100%;
   }
-
-  .crew-image {
-    height: 16rem;
-  }
 }
 
+/* Ajustes para pantallas medianas (3 columnas) */
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
   .grid {
     grid-template-columns: repeat(3, 1fr);
@@ -198,12 +259,9 @@ function loadMoreCrews() {
   .card {
     width: 25rem;
   }
-
-  .crew-image {
-    height: 192px;
-  }
 }
 
+/* Ajustes para pantallas grandes (3 columnas) */
 @media only screen and (min-width: 1024px) {
   .grid {
     grid-template-columns: repeat(3, 1fr);
@@ -211,10 +269,6 @@ function loadMoreCrews() {
 
   .card {
     width: 25rem;
-  }
-
-  .crew-image {
-    height: 192px;
   }
 }
 </style>
