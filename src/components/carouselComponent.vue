@@ -6,7 +6,7 @@
         <img :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt" style="width: 100%; display: block;" />
       </template>
       <template #thumbnail="slotProps">
-        <img :src="slotProps.item.thumbnailImageSrc" :alt="slotProps.item.alt" style="display: block;" />
+        <img :src="slotProps.item.thumbnailImageSrc" :alt="slotProps.item.alt" class="thumbnail-img" />
       </template>
     </Galleria>
   </div>
@@ -17,9 +17,9 @@
 <script lang="ts" setup>
 import Galleria from 'primevue/galleria';
 import { ref, onMounted } from "vue";
-import img1 from "../../public/img1.jpg";
-import img2 from "../../public/img2.jpg";
-import img3 from "../../public/img3.jpg";
+import img1 from "@/assets/images/carousel/img1.jpg";
+import img2 from "@/assets/images/carousel/img2.jpg";
+import img3 from "@/assets/images/carousel/img3.jpg";
 
 onMounted(() => {
   images.value = [
@@ -56,9 +56,10 @@ const responsiveOptions = ref([
 </script>
 
 <style scoped>
-.carousel-inner {
-  display: flex;
-  justify-content: center;
+::v-deep(.p-galleria) {
+  margin-left: auto;
+  margin-right: auto;
   width: 100%;
+  max-width: 70%;
 }
 </style>

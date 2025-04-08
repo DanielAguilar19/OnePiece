@@ -4,6 +4,7 @@
     <navegationComponent></navegationComponent>
     <RouterView class="content" />
   </main>
+
 </template>
 
 <script setup lang="ts">
@@ -24,12 +25,13 @@ watchEffect(() => {
 
 </script>
 
-<style scoped>
+<style>
 .content {
   margin-top: 60px;
 }
 
 main {
+  width: 80vw;
   margin-top: 60px;
   padding: 20px;
 

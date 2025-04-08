@@ -5,7 +5,6 @@ export const CrewService = {
   async GetCrews(): Promise<Crew[]> {
     try {
       const response = await axios.get('https://api.api-onepiece.com/v2/crews/en')
-
       return response.data
     } catch (error) {
       console.error('Error fetching crews:', error)
